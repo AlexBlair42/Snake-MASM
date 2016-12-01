@@ -13,16 +13,16 @@ INCLUDE Irvine32.inc
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .data
-rows BYTE ?
-cols BYTE ?
+
+msg BYTE "Welcome to the Snake!", 0                                                                    ; This will be the welcome message
+Instruct_msg BYTE "Use the arrow keys to move the snake in the corosponding direction.", 0             ; This will be the instructions to the user on how to play
+EndInstruct_msg BYTE "To end the game either hit something (Wall or yourself) or press Esc.", 0        ; This will be the conditions of how to end the game
+EndMsg BYTE "Thank You for playing Snake!", 0                                                          ; This will be the game over message
+ScoreMsg BYTE "Score: ", 0                                                                             ; This will display the score
+
 
 .code
 main PROC
-
-
-call GetMaxXY
-mov rows, al
-mov cols, dl
 
 
 
@@ -56,5 +56,23 @@ SnakeMovement PROC
 ret
 SnakeMovement ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ScoreDisp PROC
+; This procedure will display the user's score
+
+ret
+ScoreDisp ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FoodRand PROC
+; This procedure will randomize and display the food for the snake
+
+ret
+FoodRand ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 
 END main
