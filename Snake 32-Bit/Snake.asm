@@ -13,15 +13,48 @@ INCLUDE Irvine32.inc
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 .data
+rows BYTE ?
+cols BYTE ?
 
 .code
 main PROC
 
 
+call GetMaxXY
+mov rows, al
+mov cols, dl
 
 
 
 
 	exit
 main ENDP
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CreateSnake PROC
+; This procedure will genereate a Snake 
+
+
+ret
+CreateSnake ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CreateGrid PROC
+; This procedure will generate the grid system in which the game is played
+
+
+ret
+CreateGrid ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+SnakeMovement PROC
+; This procedure will take user input and interpret it 
+; Into snake movement
+
+ret
+SnakeMovement ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 END main
