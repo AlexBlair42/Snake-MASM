@@ -37,7 +37,7 @@ mov edx, OFFSET SnakeArr
 
 call WriteString
 
-inc SnakeArr
+;inc SnakeArr
 
 
 ret
