@@ -15,7 +15,7 @@ INCLUDE Irvine32.inc
 .data
 
 SnakeArr WORD  1 (218)                                           ; Array to create snake
-
+FoodArr WORD 1 (249)
 
 .code
 main PROC
@@ -26,6 +26,12 @@ call Clrscr
 
 call CreateSnake
 
+call Crlf
+
+call FoodRand
+
+call Crlf
+
 	exit
 main ENDP
 
@@ -33,19 +39,17 @@ main ENDP
 CreateSnake PROC
 ; This procedure will genereate a Snake 
 
-
 mov edx, OFFSET SnakeArr
 mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
-mov ecx, 100                                      ; This will set the ECX register to be decremented while looping
+mov ecx, 30                                       ; This will set the ECX register to be decremented while looping
 
-SL:
+;SL:
               
 call WriteString
 
 inc ax
 
-
-loop SL
+;loop SL
 
 
 ret
@@ -81,6 +85,14 @@ ScoreDisp ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 FoodRand PROC
 ; This procedure will randomize and display the food for the snake
+
+mov dh, 10
+mov dl, 20
+
+call Gotoxy
+
+mov edx, OFFSET FoodArr
+call WriteString
 
 ret
 FoodRand ENDP
