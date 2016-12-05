@@ -20,7 +20,7 @@ SnakeArr WORD  1 (219)                                           ; Array to crea
 .code
 main PROC
 
-call Randomize
+;call Randomize
 
 call Clrscr
 
@@ -33,11 +33,16 @@ main ENDP
 CreateSnake PROC
 ; This procedure will genereate a Snake 
 
+SL:
 mov edx, OFFSET SnakeArr
-
+mov ax, SnakeArr                           ; This will set the Ax register to be incremented during the loop 
+               
 call WriteString
 
-;inc SnakeArr
+inc SnakeArr
+mov ecx, 30                                ; This will set the ECX register to be decremented while looping
+
+loop SL
 
 
 ret
