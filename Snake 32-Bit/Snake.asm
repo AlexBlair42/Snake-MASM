@@ -14,7 +14,7 @@ INCLUDE Irvine32.inc
 
 .data
 
-SnakeArr WORD  1 (219)                                           ; Array to create snake
+SnakeArr WORD  1 (218)                                           ; Array to create snake
 
 
 .code
@@ -33,14 +33,17 @@ main ENDP
 CreateSnake PROC
 ; This procedure will genereate a Snake 
 
-SL:
+
 mov edx, OFFSET SnakeArr
-mov ax, SnakeArr                           ; This will set the Ax register to be incremented during the loop 
-               
+mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
+mov ecx, 100                                      ; This will set the ECX register to be decremented while looping
+
+SL:
+              
 call WriteString
 
-inc SnakeArr
-mov ecx, 30                                ; This will set the ECX register to be decremented while looping
+inc ax
+
 
 loop SL
 
