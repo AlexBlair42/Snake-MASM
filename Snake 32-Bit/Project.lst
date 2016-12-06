@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/04/16 22:27:28
+Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/06/16 11:37:05
 Snake   (Snake.asm					     Page 1 - 1
 
 
@@ -112,19 +112,24 @@ Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/04/16 22:27:28
  00000039  B6 0A		mov dh, 10
  0000003B  B2 14		mov dl, 20
 
- 0000003D  E8 00000000 E	call Gotoxy
+				mov eax, dh
+Snake.asm(92) : error A2070:invalid instruction operands
 
- 00000042  BA 00000002 R	mov edx, OFFSET FoodArr
- 00000047  E8 00000000 E	call WriteString
+ 0000003D  E8 00000000 E	call RandomRange
 
- 0000004C  C3			ret
- 0000004D			FoodRand ENDP
+ 00000042  E8 00000000 E	call Gotoxy
+
+ 00000047  BA 00000002 R	mov edx, OFFSET FoodArr
+ 0000004C  E8 00000000 E	call WriteString
+
+ 00000051  C3			ret
+ 00000052			FoodRand ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/04/16 22:27:28
+Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/06/16 11:37:05
 Snake   (Snake.asm					     Symbols 2 - 1
 
 
@@ -219,7 +224,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 00000004 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000004D Para	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000052 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -241,7 +246,7 @@ ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 FileTimeToDosDateTime  . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 FileTimeToSystemTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 FlushConsoleInputBuffer  . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-FoodRand . . . . . . . . . . . .	P Near	 00000039 _TEXT	Length= 00000014 Public STDCALL
+FoodRand . . . . . . . . . . . .	P Near	 00000039 _TEXT	Length= 00000019 Public STDCALL
 FormatMessageA . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetCommandLineA  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetCommandTail . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -572,4 +577,4 @@ wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
 
 	   0 Warnings
-	   0 Errors
+	   1 Errors

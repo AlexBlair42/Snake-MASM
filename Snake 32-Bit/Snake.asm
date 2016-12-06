@@ -89,6 +89,10 @@ FoodRand PROC
 mov dh, 10
 mov dl, 20
 
+;mov eax, 
+
+call RandomRange
+
 call Gotoxy
 
 mov edx, OFFSET FoodArr
@@ -96,6 +100,14 @@ call WriteString
 
 ret
 FoodRand ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+UserInput PROC
+
+
+ret
+UserInput ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
