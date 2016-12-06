@@ -16,7 +16,8 @@ INCLUDE Irvine32.inc
 
 SnakeArr WORD  1 (218)                                           ; Array to create snake
 FoodArr WORD 1 (249)
-
+x BYTE 0
+y BYTE 0
 .code
 main PROC
 
@@ -32,6 +33,7 @@ call FoodRand
 
 call Crlf
 
+;call CreateGrid
 	exit
 main ENDP
 
@@ -60,6 +62,13 @@ CreateSnake ENDP
 CreateGrid PROC
 ; This procedure will generate the grid system in which the game is played
 
+call GetMaxXY
+
+movzx ax, x
+call WriteInt
+movzx dx, y
+mov ax, dx
+call WriteInt
 
 ret
 CreateGrid ENDP
