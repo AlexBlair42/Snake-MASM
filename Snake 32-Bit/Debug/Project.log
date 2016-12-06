@@ -1,13 +1,9 @@
-﻿Build started 12/6/2016 11:37:04 AM.
+﻿Build started 12/6/2016 12:16:56 PM.
      1>Project "C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Project.vcxproj" on node 2 (Build target(s)).
-     1>_MASM:
-         Assembling Snake.asm...
-         cmd.exe /C "C:\Users\Alex\AppData\Local\Temp\tmpc1fc4e05fa27406ca098bea3857f73bd.cmd"
-         ml.exe /c /nologo /Sg /WX /Zi /Fo"Debug\Snake.obj" /Fl"Project.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /TaSnake.asm
-     1>Snake.asm(92): error A2070: invalid instruction operands
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\BuildCustomizations\masm.targets(50,5): error MSB3721: The command "ml.exe /c /nologo /Sg /WX /Zi /Fo"Debug\Snake.obj" /Fl"Project.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /TaSnake.asm" exited with code 1.
-     1>Done Building Project "C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Project.vcxproj" (Build target(s)) -- FAILED.
+     1>Link:
+         Project.vcxproj -> C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Debug\Project.exe
+     1>Done Building Project "C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Project.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.70
+Time Elapsed 00:00:00.03

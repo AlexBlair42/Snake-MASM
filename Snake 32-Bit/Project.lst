@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/06/16 11:37:05
+=======
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    12/05/16 19:29:06
+>>>>>>> origin/master
 Snake   (Snake.asm					     Page 1 - 1
 
 
@@ -37,81 +41,92 @@ Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/06/16 11:37:05
 
  00000000 00DB			SnakeArr WORD  1 (218)                                           ; Array to create snake
  00000002 00FA			FoodArr WORD 1 (249)
-
+ 00000004 00			x BYTE 0
+ 00000005 00			y BYTE 0
  00000000			.code
  00000000			main PROC
 
 				;call Randomize
 
- 00000000  E8 00000000 E	call Clrscr
+				;call Clrscr
 
- 00000005  E8 00000016		call CreateSnake
+				;call CreateSnake
 
- 0000000A  E8 00000000 E	call Crlf
+				;call Crlf
 
- 0000000F  E8 00000025		call FoodRand
+				;call FoodRand
 
- 00000014  E8 00000000 E	call Crlf
+				;call Crlf
 
+ 00000000  E8 0000001D		call CreateGrid
 					exit
- 00000019  6A 00	   *	    push   +000000000h
- 0000001B  E8 00000000 E   *	    call   ExitProcess
- 00000020			main ENDP
+ 00000005  6A 00	   *	    push   +000000000h
+ 00000007  E8 00000000 E   *	    call   ExitProcess
+ 0000000C			main ENDP
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000020			CreateSnake PROC
+ 0000000C			CreateSnake PROC
 				; This procedure will genereate a Snake 
 
- 00000020  BA 00000000 R	mov edx, OFFSET SnakeArr
- 00000025  66| B8 0002		mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
- 00000029  B9 0000001E		mov ecx, 30                                       ; This will set the ECX register to be decremented while looping
+ 0000000C  BA 00000000 R	mov edx, OFFSET SnakeArr
+ 00000011  66| B8 0002		mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
+ 00000015  B9 0000001E		mov ecx, 30                                       ; This will set the ECX register to be decremented while looping
 
 				;SL:
 				              
- 0000002E  E8 00000000 E	call WriteString
+ 0000001A  E8 00000000 E	call WriteString
 
- 00000033  66| 40		inc ax
+ 0000001F  66| 40		inc ax
 
 				;loop SL
 
 
- 00000035  C3			ret
- 00000036			CreateSnake ENDP
+ 00000021  C3			ret
+ 00000022			CreateSnake ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000036			CreateGrid PROC
+ 00000022			CreateGrid PROC
 				; This procedure will generate the grid system in which the game is played
 
+ 00000022  E8 00000000 E	call GetMaxXY
 
- 00000036  C3			ret
- 00000037			CreateGrid ENDP
+ 00000027  66| 0F B6 05		movzx ax, x
+	   00000004 R
+ 0000002F  E8 00000000 E	call WriteInt
+ 00000034  66| 0F B6 15		movzx dx, y
+	   00000005 R
+ 0000003C  66| 8B C2		mov ax, dx
+ 0000003F  E8 00000000 E	call WriteInt
+ 00000044  C3			ret
+ 00000045			CreateGrid ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000037			SnakeMovement PROC
+ 00000045			SnakeMovement PROC
 				; This procedure will take user input and interpret it 
 				; Into snake movement
 
- 00000037  C3			ret
- 00000038			SnakeMovement ENDP
+ 00000045  C3			ret
+ 00000046			SnakeMovement ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000038			ScoreDisp PROC
+ 00000046			ScoreDisp PROC
 				; This procedure will display the user's score
 
- 00000038  C3			ret
- 00000039			ScoreDisp ENDP
+ 00000046  C3			ret
+ 00000047			ScoreDisp ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000039			FoodRand PROC
+ 00000047			FoodRand PROC
 				; This procedure will randomize and display the food for the snake
 
- 00000039  B6 0A		mov dh, 10
- 0000003B  B2 14		mov dl, 20
+ 00000047  B6 0A		mov dh, 10
+ 00000049  B2 14		mov dl, 20
 
+<<<<<<< HEAD
 				mov eax, dh
 Snake.asm(92) : error A2070:invalid instruction operands
 
@@ -124,12 +139,25 @@ Snake.asm(92) : error A2070:invalid instruction operands
 
  00000051  C3			ret
  00000052			FoodRand ENDP
+=======
+ 0000004B  E8 00000000 E	call Gotoxy
+
+ 00000050  BA 00000002 R	mov edx, OFFSET FoodArr
+ 00000055  E8 00000000 E	call WriteString
+
+ 0000005A  C3			ret
+ 0000005B			FoodRand ENDP
+>>>>>>> origin/master
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
 				END main
+<<<<<<< HEAD
 Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/06/16 11:37:05
+=======
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    12/05/16 19:29:06
+>>>>>>> origin/master
 Snake   (Snake.asm					     Symbols 2 - 1
 
 
@@ -223,8 +251,13 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+<<<<<<< HEAD
 _DATA  . . . . . . . . . . . . .	32 Bit	 00000004 Para	  Public  'DATA'	
 _TEXT  . . . . . . . . . . . . .	32 Bit	 00000052 Para	  Public  'CODE'	
+=======
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000006 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000005B Para	  Public  'CODE'	
+>>>>>>> origin/master
 
 
 Procedures, parameters, and locals:
@@ -235,9 +268,9 @@ CloseFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 CloseHandle  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 CreateFileA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-CreateGrid . . . . . . . . . . .	P Near	 00000036 _TEXT	Length= 00000001 Public STDCALL
+CreateGrid . . . . . . . . . . .	P Near	 00000022 _TEXT	Length= 00000023 Public STDCALL
 CreateOutputFile . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-CreateSnake  . . . . . . . . . .	P Near	 00000020 _TEXT	Length= 00000016 Public STDCALL
+CreateSnake  . . . . . . . . . .	P Near	 0000000C _TEXT	Length= 00000016 Public STDCALL
 Crlf . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Delay  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 DumpMem  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -246,7 +279,11 @@ ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 FileTimeToDosDateTime  . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 FileTimeToSystemTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 FlushConsoleInputBuffer  . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+<<<<<<< HEAD
 FoodRand . . . . . . . . . . . .	P Near	 00000039 _TEXT	Length= 00000019 Public STDCALL
+=======
+FoodRand . . . . . . . . . . . .	P Near	 00000047 _TEXT	Length= 00000014 Public STDCALL
+>>>>>>> origin/master
 FormatMessageA . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetCommandLineA  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetCommandTail . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -297,7 +334,7 @@ ReadInt  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ReadKeyFlush . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadKey  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadString . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-ScoreDisp  . . . . . . . . . . .	P Near	 00000038 _TEXT	Length= 00000001 Public STDCALL
+ScoreDisp  . . . . . . . . . . .	P Near	 00000046 _TEXT	Length= 00000001 Public STDCALL
 SetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleCursorPosition . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -310,7 +347,7 @@ SetLocalTime . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 SetTextColor . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ShowFPUStack . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Sleep  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-SnakeMovement  . . . . . . . . .	P Near	 00000037 _TEXT	Length= 00000001 Public STDCALL
+SnakeMovement  . . . . . . . . .	P Near	 00000045 _TEXT	Length= 00000001 Public STDCALL
 StrLength  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Str_compare  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Str_copy . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -336,7 +373,7 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000020 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000000C Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -574,7 +611,9 @@ magenta  . . . . . . . . . . . .	Number	 00000005h
 red  . . . . . . . . . . . . . .	Number	 00000004h   
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
+x  . . . . . . . . . . . . . . .	Byte	 00000004 _DATA	
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
+y  . . . . . . . . . . . . . . .	Byte	 00000005 _DATA	
 
 	   0 Warnings
 	   1 Errors
