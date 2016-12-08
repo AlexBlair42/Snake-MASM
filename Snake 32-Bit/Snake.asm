@@ -1,7 +1,7 @@
 TITLE   Snake   (Snake.asm)
 INCLUDE Irvine32.inc
 
-; Last update: 11/29/16
+; Last update: 12/8/16
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; This program: 
@@ -11,29 +11,29 @@ INCLUDE Irvine32.inc
 ;Also the next level will start if the snake finishes all of its food. 
 ;Lastly the user may end the game by pressing the escape key.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+; 218 is the character I want for the snake 
 .data
 
+RandomVal DWORD ?                                                ; Stores a random value
 SnakeArr WORD  1 (218)                                           ; Array to create snake
-FoodArr WORD 1 (249)
+FoodArr WORD 1 (249)                                             ; Array to create food
+
+SnakeX BYTE 0                                                    ; This is the x coordinate for the snake
+SnakeY BYTE 0                                                    ; This is the y coordinate for the snake
+
 x BYTE 0
 y BYTE 0
+
 .code
 main PROC
-
-;call Randomize
-
+call Randomize
 call Clrscr
-
 call CreateSnake
-
 call Crlf
-
+FL:
 call FoodRand
-
+loop FL
 call Crlf
-
-;call CreateGrid
 	exit
 main ENDP
 
@@ -41,37 +41,22 @@ main ENDP
 CreateSnake PROC
 ; This procedure will genereate a Snake 
 
+mov dl, SnakeX
+mov dh, SnakeY
+
+call Gotoxy
+
 mov edx, OFFSET SnakeArr
 mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
 mov ecx, 30                                       ; This will set the ECX register to be decremented while looping
-
-;SL:
-              
+         
 call WriteString
 
 inc ax
 
-;loop SL
-
 
 ret
 CreateSnake ENDP
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CreateGrid PROC
-; This procedure will generate the grid system in which the game is played
-
-call GetMaxXY
-
-movzx ax, x
-call WriteInt
-movzx dx, y
-mov ax, dx
-call WriteInt
-
-ret
-CreateGrid ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -95,12 +80,17 @@ ScoreDisp ENDP
 FoodRand PROC
 ; This procedure will randomize and display the food for the snake
 
-mov dh, 10
-mov dl, 20
-
-;mov eax, 
+mov eax, 51
 
 call RandomRange
+
+mov RandomVal, eax
+
+mov dh, al
+dec eax
+call RandomRange
+
+mov dl, al
 
 call Gotoxy
 
