@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/08/16 14:07:08
+Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/09/16 16:22:15
 Snake   (Snake.asm					     Page 1 - 1
 
 
@@ -35,126 +35,134 @@ Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/08/16 14:07:08
 				; 218 is the character I want for the snake 
  00000000			.data
 
- 00000000 00000000		RandomVal DWORD ?                                                ; Stores a random value
- 00000004 00DB			SnakeArr WORD  1 (218)                                           ; Array to create snake
- 00000006 00FA			FoodArr WORD 1 (249)                                             ; Array to create food
+ 00000000 00DB			SnakeArr WORD  1 (218)                                           ; Array to create snake
+ 00000002 00FA			FoodArr WORD 1 (249)                                             ; Array to create food
 
- 00000008 00			SnakeX BYTE 0                                                    ; This is the x coordinate for the snake
- 00000009 00			SnakeY BYTE 0                                                    ; This is the y coordinate for the snake
+ 00000004 00			SnakeX BYTE 0                                                    ; This is the x coordinate for the snake
+ 00000005 00			SnakeY BYTE 0                                                    ; This is the y coordinate for the snake
 
- 0000000A 00			x BYTE 0
- 0000000B 00			y BYTE 0
+				.stack 
+ 00000006  00000080 [		DWORD 128 DUP(0)
+	    00000000
+	   ]
+
 
  00000000			.code
  00000000			main PROC
  00000000  E8 00000000 E	call Randomize
  00000005  E8 00000000 E	call Clrscr
- 0000000A  E8 00000018		call CreateSnake
- 0000000F  E8 00000000 E	call Crlf
- 00000014			FL:
- 00000014  E8 0000005A		call FoodRand
- 00000019  E2 F9		loop FL
- 0000001B  E8 00000000 E	call Crlf
-				;call CreateGrid
+ 0000000A			SG:
+
+				call Snake
+Snake.asm(33) : error A2076:jump destination must specify a label
+ 0000000A  66| FF 35		push SnakeArr
+	   00000000 R
+
+ 00000011  E8 00000000 E	call Crlf
+
+ 00000021			FL:
+ 00000021  E8 0000001B		call FoodRand
+ 00000026  74 F9		je FL
+ 00000028  E8 00000000 E	call Crlf
 					exit
- 00000020  6A 00	   *	    push   +000000000h
- 00000022  E8 00000000 E   *	    call   ExitProcess
- 00000027			main ENDP
+ 0000002D  6A 00	   *	    push   +000000000h
+ 0000002F  E8 00000000 E   *	    call   ExitProcess
+ 00000034			main ENDP
+
+
+				COORD STRUCT
+
+				x WORD ?        ; x Coordinate
+
+				y WORD ?        ; y Coordinate
+
+				COORD ENDS
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000027			CreateSnake PROC
+ 00000000			Snake STRUCT
 				; This procedure will genereate a Snake 
 
- 00000027  8A 15 00000008 R	mov dl, SnakeX
- 0000002D  8A 35 00000009 R	mov dh, SnakeY
+				mov dl, SnakeX
+Snake.asm(58) : error A2037:statement not allowed inside structure definition
+				mov dh, SnakeY
+Snake.asm(59) : error A2037:statement not allowed inside structure definition
 
- 00000033  E8 00000000 E	call Gotoxy
+				call Gotoxy
+Snake.asm(61) : error A2037:statement not allowed inside structure definition
 
- 00000038  BA 00000004 R	mov edx, OFFSET SnakeArr
- 0000003D  66| B8 0002		mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
- 00000041  B9 0000001E		mov ecx, 30                                       ; This will set the ECX register to be decremented while looping
+				mov edx, OFFSET SnakeArr
+Snake.asm(63) : error A2037:statement not allowed inside structure definition
+				mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
+Snake.asm(64) : error A2037:statement not allowed inside structure definition
+				mov ecx, 15                                      ; This will set the ECX register to be decremented while looping
+Snake.asm(65) : error A2037:statement not allowed inside structure definition
 				         
- 00000046  E8 00000000 E	call WriteString
+				call WriteString
+Snake.asm(67) : error A2037:statement not allowed inside structure definition
 
- 0000004B  66| 40		inc ax
+				inc ax
+Snake.asm(69) : error A2037:statement not allowed inside structure definition
 
 
- 0000004D  C3			ret
- 0000004E			CreateSnake ENDP
+				ret
+Snake.asm(72) : error A2037:statement not allowed inside structure definition
+				Snake ENDS
+Snake.asm(73) : warning A6006:structure contains no members
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 0000004E			CreateGrid PROC
-				; This procedure will generate the grid system in which the game is played
-
- 0000004E  E8 00000000 E	call GetMaxXY
-
- 00000053  66| 0F B6 05		movzx ax, x
-	   0000000A R
- 0000005B  E8 00000000 E	call WriteInt
- 00000060  66| 0F B6 15		movzx dx, y
-	   0000000B R
- 00000068  66| 8B C2		mov ax, dx
- 0000006B  E8 00000000 E	call WriteInt
-
- 00000070  C3			ret
- 00000071			CreateGrid ENDP
-				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000071			SnakeMovement PROC
+ 00000034			SnakeMovement PROC
 				; This procedure will take user input and interpret it 
 				; Into snake movement
 
- 00000071  C3			ret
- 00000072			SnakeMovement ENDP
+				call GetKeyM
+Snake.asm(81) : error A2006:undefined symbol : GetKeyM
+
+ 00000034  C3			ret
+ 00000035			SnakeMovement ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000072			ScoreDisp PROC
+ 00000035			ScoreDisp PROC
 				; This procedure will display the user's score
 
- 00000072  C3			ret
- 00000073			ScoreDisp ENDP
+ 00000035  C3			ret
+ 00000036			ScoreDisp ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 00000073			FoodRand PROC
+ 00000036			FoodRand PROC
 				; This procedure will randomize and display the food for the snake
 
- 00000073  B8 00000033		mov eax, 51
+ 00000036  E8 00000000 E	call Random32
 
- 00000078  E8 00000000 E	call RandomRange
+ 0000003B  8A F4		mov dh, ah
 
- 0000007D  A3 00000000 R	mov RandomVal, eax
+ 0000003D  E8 00000000 E	call Random32
 
- 00000082  8A F0		mov dh, al
- 00000084  48			dec eax
- 00000085  E8 00000000 E	call RandomRange
+ 00000042  8A D0		mov dl, al
 
- 0000008A  8A D0		mov dl, al
+ 00000044  E8 00000000 E	call Gotoxy
 
- 0000008C  E8 00000000 E	call Gotoxy
+ 00000049  BA 00000002 R	mov edx, OFFSET FoodArr
+ 0000004E  E8 00000000 E	call WriteString
 
- 00000091  BA 00000006 R	mov edx, OFFSET FoodArr
- 00000096  E8 00000000 E	call WriteString
-
- 0000009B  C3			ret
- 0000009C			FoodRand ENDP
+ 00000053  C3			ret
+ 00000054			FoodRand ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 0000009C			UserInput PROC
+ 00000054			UserInput PROC
 
 
- 0000009C  C3			ret
- 0000009D			UserInput ENDP
+ 00000054  C3			ret
+ 00000055			UserInput ENDP
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/08/16 14:07:08
+Microsoft (R) Macro Assembler Version 14.00.23026.0	    12/09/16 16:22:15
 Snake   (Snake.asm					     Symbols 2 - 1
 
 
@@ -238,6 +246,7 @@ SYSTEMTIME . . . . . . . . . . .	 00000010
   wMinute  . . . . . . . . . . .	 0000000A	 Word
   wSecond  . . . . . . . . . . .	 0000000C	 Word
   wMilliseconds  . . . . . . . .	 0000000E	 Word
+Snake  . . . . . . . . . . . . .	 00000000
 WINDOW_BUFFER_SIZE_RECORD  . . .	 00000004
   dwSize . . . . . . . . . . . .	 00000000	 DWord
 
@@ -248,8 +257,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 0000000C Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000009D Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000206 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000060 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -260,9 +269,7 @@ CloseFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 CloseHandle  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 CreateFileA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-CreateGrid . . . . . . . . . . .	P Near	 0000004E _TEXT	Length= 00000023 Public STDCALL
 CreateOutputFile . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-CreateSnake  . . . . . . . . . .	P Near	 00000027 _TEXT	Length= 00000027 Public STDCALL
 Crlf . . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Delay  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 DumpMem  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -271,7 +278,7 @@ ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 FileTimeToDosDateTime  . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 FileTimeToSystemTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 FlushConsoleInputBuffer  . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-FoodRand . . . . . . . . . . . .	P Near	 00000073 _TEXT	Length= 00000029 Public STDCALL
+FoodRand . . . . . . . . . . . .	P Near	 00000041 _TEXT	Length= 0000001E Public STDCALL
 FormatMessageA . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetCommandLineA  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 GetCommandTail . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -322,7 +329,7 @@ ReadInt  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ReadKeyFlush . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadKey  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadString . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-ScoreDisp  . . . . . . . . . . .	P Near	 00000072 _TEXT	Length= 00000001 Public STDCALL
+ScoreDisp  . . . . . . . . . . .	P Near	 00000040 _TEXT	Length= 00000001 Public STDCALL
 SetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleCursorPosition . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -335,7 +342,7 @@ SetLocalTime . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 SetTextColor . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ShowFPUStack . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Sleep  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-SnakeMovement  . . . . . . . . .	P Near	 00000071 _TEXT	Length= 00000001 Public STDCALL
+SnakeMovement  . . . . . . . . .	P Near	 00000034 _TEXT	Length= 0000000C Public STDCALL
 StrLength  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Str_compare  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Str_copy . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -343,7 +350,7 @@ Str_length . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 Str_trim . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Str_ucase  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SystemTimeToFileTime . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-UserInput  . . . . . . . . . . .	P Near	 0000009C _TEXT	Length= 00000001 Public STDCALL
+UserInput  . . . . . . . . . . .	P Near	 0000005F _TEXT	Length= 00000001 Public STDCALL
 WaitMsg  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteBinB  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteBin . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -362,8 +369,9 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000027 Public STDCALL
-  FL . . . . . . . . . . . . . .	L Near	 00000014 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000034 Public STDCALL
+  SG . . . . . . . . . . . . . .	L Near	 0000000A _TEXT	
+  FL . . . . . . . . . . . . . .	L Near	 00000021 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -425,7 +433,7 @@ FILE_WRITE_DATA  . . . . . . . .	Number	 00000002h
 FOCUS_EVENT  . . . . . . . . . .	Number	 00000010h   
 FORMAT_MESSAGE_ALLOCATE_BUFFER .	Number	 00000100h   
 FORMAT_MESSAGE_FROM_SYSTEM . . .	Number	 00001000h   
-FoodArr  . . . . . . . . . . . .	Word	 00000006 _DATA	
+FoodArr  . . . . . . . . . . . .	Word	 00000002 _DATA	
 FormatMessage  . . . . . . . . .	Text   	 FormatMessageA
 GENERIC_ALL  . . . . . . . . . .	Number	 10000000h   
 GENERIC_EXECUTE  . . . . . . . .	Number	 20000000h   
@@ -490,7 +498,6 @@ OPEN_EXISTING  . . . . . . . . .	Number	 00000003h
 PeekConsoleInput . . . . . . . .	Text   	 PeekConsoleInputA
 RIGHT_ALT_PRESSED  . . . . . . .	Number	 00000001h   
 RIGHT_CTRL_PRESSED . . . . . . .	Number	 00000004h   
-RandomVal  . . . . . . . . . . .	DWord	 00000000 _DATA	
 ReadConsoleInput . . . . . . . .	Text   	 ReadConsoleInputA
 ReadConsole  . . . . . . . . . .	Text   	 ReadConsoleA
 SCROLLLOCK_ON  . . . . . . . . .	Number	 00000040h   
@@ -500,9 +507,9 @@ STD_ERROR_HANDLE . . . . . . . .	Number	 -0000000Ch
 STD_INPUT_HANDLE . . . . . . . .	Number	 -0000000Ah   
 STD_OUTPUT_HANDLE  . . . . . . .	Number	 -0000000Bh   
 SetConsoleTitle  . . . . . . . .	Text   	 SetConsoleTitleA
-SnakeArr . . . . . . . . . . . .	Word	 00000004 _DATA	
-SnakeX . . . . . . . . . . . . .	Byte	 00000008 _DATA	
-SnakeY . . . . . . . . . . . . .	Byte	 00000009 _DATA	
+SnakeArr . . . . . . . . . . . .	Word	 00000000 _DATA	
+SnakeX . . . . . . . . . . . . .	Byte	 00000004 _DATA	
+SnakeY . . . . . . . . . . . . .	Byte	 00000005 _DATA	
 TAB  . . . . . . . . . . . . . .	Number	 00000009h   
 TRUE . . . . . . . . . . . . . .	Number	 00000001h   
 TRUNCATE_EXISTING  . . . . . . .	Number	 00000005h   
@@ -604,9 +611,7 @@ magenta  . . . . . . . . . . . .	Number	 00000005h
 red  . . . . . . . . . . . . . .	Number	 00000004h   
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
-x  . . . . . . . . . . . . . . .	Byte	 0000000A _DATA	
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
-y  . . . . . . . . . . . . . . .	Byte	 0000000B _DATA	
 
-	   0 Warnings
-	   0 Errors
+	   1 Warnings
+	   11 Errors

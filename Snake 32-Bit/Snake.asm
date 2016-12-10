@@ -14,31 +14,45 @@ INCLUDE Irvine32.inc
 ; 218 is the character I want for the snake 
 .data
 
-RandomVal DWORD ?                                                ; Stores a random value
 SnakeArr WORD  1 (218)                                           ; Array to create snake
 FoodArr WORD 1 (249)                                             ; Array to create food
 
 SnakeX BYTE 0                                                    ; This is the x coordinate for the snake
 SnakeY BYTE 0                                                    ; This is the y coordinate for the snake
 
-x BYTE 0
-y BYTE 0
+.stack 
+DWORD 128 DUP(0)
+
 
 .code
 main PROC
 call Randomize
 call Clrscr
-call CreateSnake
+SG:
+
+call Snake
+push SnakeArr
+
 call Crlf
+
 FL:
 call FoodRand
-loop FL
+je FL
 call Crlf
 	exit
 main ENDP
 
+
+COORD STRUCT
+
+x WORD ?        ; x Coordinate
+
+y WORD ?        ; y Coordinate
+
+COORD ENDS
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-CreateSnake PROC
+Snake STRUCT
 ; This procedure will genereate a Snake 
 
 mov dl, SnakeX
@@ -48,7 +62,7 @@ call Gotoxy
 
 mov edx, OFFSET SnakeArr
 mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
-mov ecx, 30                                       ; This will set the ECX register to be decremented while looping
+mov ecx, 15                                      ; This will set the ECX register to be decremented while looping
          
 call WriteString
 
@@ -56,13 +70,15 @@ inc ax
 
 
 ret
-CreateSnake ENDP
+Snake ENDS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 SnakeMovement PROC
 ; This procedure will take user input and interpret it 
 ; Into snake movement
+
+call GetKeyM
 
 ret
 SnakeMovement ENDP
@@ -80,15 +96,11 @@ ScoreDisp ENDP
 FoodRand PROC
 ; This procedure will randomize and display the food for the snake
 
-mov eax, 51
+call Random32
 
-call RandomRange
+mov dh, ah
 
-mov RandomVal, eax
-
-mov dh, al
-dec eax
-call RandomRange
+call Random32
 
 mov dl, al
 
