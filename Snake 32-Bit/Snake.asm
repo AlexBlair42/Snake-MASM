@@ -14,14 +14,28 @@ INCLUDE Irvine32.inc
 ; 218 is the character I want for the snake 
 .data
 
-SnakeArr WORD  1 (218)                                           ; Array to create snake
-FoodArr WORD 1 (249)                                             ; Array to create food
+;;;;;;;;;;;;;;;;;;;;;;; These are the Snake elements
+x_head BYTE ?         ; X coordinate of the head of the snake
+y_head BYTE ?         ; Y coordinate of the head of the snake
+head BYTE 2H          ; Character for the head of the snake
+segment BYTE "#"      ; Character for snake segments
 
-SnakeX BYTE 0                                                    ; This is the x coordinate for the snake
-SnakeY BYTE 0                                                    ; This is the y coordinate for the snake
+x_food BYTE ?         ; X coordinate for the food
+y_food BYTE ?         ; Y coordinate for the food
+foodeaten BYTE 0      ; Amount of food eaten
+Food BYTE "a"         ; Character for the food
 
-.stack 
-DWORD 128 DUP(0)
+x_tail BYTE ?         ; Holds the x coordinate for the tail of the snake
+y_tail BYTE ?         ; Holds the y coordinate for the tail of the snake
+
+Segments_X BYTE 800 DUP(0)  ; Array for the X coordinate of the segments
+Segments_Y BYTE 800 DUP(0)  ; Array for the Y coordinate of the segments
+
+speed WORD 90         ; Holds the speed of the game
+
+direction BYTE 0      ; Holds Direction
+oldDirect BYTE 0      ; Holds the old direction
+
 
 
 .code
@@ -74,11 +88,99 @@ Snake ENDS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-SnakeMovement PROC
+SnakeMovement PROC USES eax edx
 ; This procedure will take user input and interpret it 
 ; Into snake movement
 
-call GetKeyM
+mov direction, ah
+call GamesSpeed
+mov ax, speed
+movzx eax, ax           ; This delays motion
+call Delay
+mov dl, 0
+mov dh, 9
+call Gotoxy
+mov ax, speed
+movzx eax, ax
+call WriteInt          ; This is the speed of the game
+
+mov dl, x_head
+mov dh, y_head
+call Gotoxy
+
+mov al, ' '
+call WriteChar
+call EatFood
+mov ah, direction     ; This passes the new direction to ah
+mov al, oldDirect     ; This passes the old direction to al
+
+cmp dl, 64
+jge GameOver
+
+cmp dl, 14
+jle GameOver
+
+cmp dh, 21
+jge GameOver
+
+cmp dh, 4
+jle GameOver
+
+cmp ah, 48H
+je Up
+
+cmp ah, 50H
+je Down
+
+cmp ah, 4DH
+je Right
+
+cmp ah, 4BH
+je Left
+
+cmp ah, 49H
+je UpRight
+
+cmp ah, 47H
+je UpLeft
+
+cmp ah, 51H
+je DownRight
+
+cmp ah, 4FH
+je DownLeft
+
+jmp Finish
+
+
+Up:
+mov oldDirect, 48H
+cmp al, 50H
+je Down
+dec dh
+jmp UpdateHead
+
+Down:
+mov oldDirect, 50H
+cmp al, 48H
+je Up
+inc dh
+jmp UpdateHead
+
+Right:
+mov oldDirect, 4DH
+cmp al, 4BH
+je Left
+inc dl
+jmp UpdateHead
+
+Left:
+mov oldDirect, 4BH
+cmp al, 4DH
+je Right
+dec dl
+jmp UpdateHead
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; This is where I left off
 
 ret
 SnakeMovement ENDP
