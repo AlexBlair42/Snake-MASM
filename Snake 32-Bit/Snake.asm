@@ -3,6 +3,11 @@ INCLUDE Irvine32.inc
 
 ; Last update: 12/8/16
 
+; Alex Blair
+; Mckenna Galle
+; Julia Abbott
+; Eben Schumann
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; This program: 
 ;Simulates the game of Snake. 
@@ -12,18 +17,21 @@ INCLUDE Irvine32.inc
 ;Lastly the user may end the game by pressing the escape key.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 218 is the character I want for the snake 
+
+
 .data
 
 ;;;;;;;;;;;;;;;;;;;;;;;
+; These are strings to be printed to the console
 
-Gameover BYTE " Game Over! ",0
-ScoreDisp BYTE " Your Score Is: ",0
+GameoverST BYTE " Game Over! ",0
+ScoreDispST BYTE " Your Score Is: ",0
 
 ;;;;;;;;;;;;;;;;;;;;;;; These are the Snake elements
 x_head BYTE ?         ; X coordinate of the head of the snake
 y_head BYTE ?         ; Y coordinate of the head of the snake
 head BYTE 2H          ; Character for the head of the snake
-segment BYTE "#"      ; Character for snake segments
+part BYTE "#"      ; Character for snake segments
 
 x_food BYTE ?         ; X coordinate for the food
 y_food BYTE ?         ; Y coordinate for the food
@@ -47,86 +55,21 @@ oldDirect BYTE 0      ; Holds the old direction
 
 
 .code
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 main PROC
-call Randomize
 call Clrscr
-SG:
 
-call Snake
-push SnakeArr
+;call Snake
 
-call Crlf
+;call Food
 
-FL:
-call FoodRand
-je FL
-call Crlf
+
 	exit
 main ENDP
-
-
-COORD STRUCT
-
-x WORD ?        ; x Coordinate
-
-y WORD ?        ; y Coordinate
-
-COORD ENDS
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-Snake PROC USES eax ebx ecx esi
-; This procedure will genereate a Snake 
-mov ebx, NumOfSegments
-cmp ebx, 1
-jge Continue
-mov esi, OFFSET Segments_X
-mov al, x_head
-mov [esi], al
-mov al, [esi]
-mov esi, OFFSET Segments_Y
-mov al, y_head
-mov [esi], al
-mov al,[esi]
-jmp Finish
 
-Continue:
-mov al, foodeaten
-movzx eax, al
-cmp al, 0
-jne NotEaten
 
-Eaten:
-mov ecx, NumOfSegments
-inc ecx
 
-ShiftRight:
-mov ebx, ecx
-mov esi, OFFSET Segments_X
-mov al, [esi+ebx-1]
-mov [esi+ebx], al
-mov esi, OFFSET Segments_Y
-mov al, [esi+ebx-1]
-mov [esi+ebx], al
-
-Loop ShiftRight
-
-mov esi, OFFSET Segments_X
-mov al, x_food
-mov [esi], al
-mov esi, OFFSET Segments_Y
-mov al, y_food
-mov [esi], al
-
-NotEaten:
-
-call SetGame
-call PrintSegments
-
-Finish:
-
-ret
-Snake ENDP
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 SnakeMovement PROC USES eax edx
@@ -134,7 +77,7 @@ SnakeMovement PROC USES eax edx
 ; Into snake movement
 
 mov direction, ah
-call GamesSpeed
+call GameSpeed
 mov ax, speed
 movzx eax, ax           ; This delays motion
 call Delay
@@ -151,7 +94,7 @@ call Gotoxy
 
 mov al, ' '
 call WriteChar
-call EatFood
+call FoodEat
 mov ah, direction     ; This passes the new direction to ah
 mov al, oldDirect     ; This passes the old direction to al
 
@@ -277,7 +220,7 @@ mov dh, 13
 call Gotoxy
 mov eax, red+(white*16)
 call SetTextColor
-mov edx, OFFSET Gameover
+mov edx, OFFSET GameoverST
 call WriteString
 mov dl, 20
 mov dh, 24
@@ -286,20 +229,12 @@ exit
 SnakeMovement ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-ScoreDisp PROC
-; This procedure will display the user's score
 
-mov eax, score
-add eax, 1
-mov score, eax
 
-ret
-ScoreDisp ENDP
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-Food PROC USES eax edx
+FoodEat PROC USES eax edx
 ; This procedure will randomize and display the food for the snake
 
 NewFood:
@@ -339,12 +274,12 @@ mov eax, NumOfSegments
 inc eax
 mov NumOfSegments, eax
 mov foodeaten, 0
-call AddSegment
+call PrintSegments
 call ScoreDisp
 mov dl, 30
 mov dh, 23
 call Gotoxy
-mov edx, OFFSET String2
+mov edx, OFFSET ScoreDispST
 call WriteString
 mov eax, score
 call WriteInt
@@ -352,8 +287,170 @@ jmp Finish
 Finish:
 
 ret
-Food ENDP
+FoodEat ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Snake PROC USES eax ebx ecx esi
+; This procedure will genereate a Snake 
+mov ebx, NumOfSegments
+cmp ebx, 1
+jge Continue
+mov esi, OFFSET Segments_X
+mov al, x_head
+mov [esi], al
+mov al, [esi]
+mov esi, OFFSET Segments_Y
+mov al, y_head
+mov [esi], al
+mov al,[esi]
+jmp Finish
+
+Continue:
+mov al, foodeaten
+movzx eax, al
+cmp al, 0
+jne NotEaten
+
+Eaten:
+mov ecx, NumOfSegments
+inc ecx
+
+ShiftRight:
+mov ebx, ecx
+mov esi, OFFSET Segments_X
+mov al, [esi+ebx-1]
+mov [esi+ebx], al
+mov esi, OFFSET Segments_Y
+mov al, [esi+ebx-1]
+mov [esi+ebx], al
+
+Loop ShiftRight
+
+mov esi, OFFSET Segments_X
+mov al, x_food
+mov [esi], al
+mov esi, OFFSET Segments_Y
+mov al, y_food
+mov [esi], al
+
+NotEaten:
+
+call SetGame
+call PrintSegments
+
+Finish:
+
+ret
+Snake ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+SetGame PROC
+
+mov esi, OFFSET Segments_X
+mov al, [esi]
+mov x_tail, al
+mov esi, OFFSET Segments_Y
+mov al, [esi]
+mov y_tail, al
+mov ebx, 1
+mov ecx, NumOfSegments
+inc ecx
+
+ShiftLeft:
+mov esi, OFFSET Segments_X
+mov al, [esi+ebx]
+mov [esi+ebx-1],al
+mov esi, OFFSET Segments_Y
+mov al, [esi+ebx]
+mov [esi+ebx-1], al
+mov al, [esi]
+inc ebx
+
+Loop ShiftLeft
+
+mov ebx, NumOfSegments
+mov esi, OFFSET Segments_X
+mov al, x_head
+mov[esi+ebx], al
+mov al, [esi]
+mov esi, OFFSET Segments_Y
+mov al, y_head
+mov [esi+ebx], al
+
+ret
+SetGame ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+PrintSegments PROC USES eax ebx ecx edx esi
+
+mov dl, x_tail
+mov dh, y_tail
+
+call Gotoxy
+
+mov al, ' '
+
+call WriteChar
+mov ecx, NumOfSegments
+inc ecx
+
+Print:
+mov ebx, ecx
+mov esi, OFFSET Segments_X
+mov al, [esi+ebx-1]
+mov dl, al
+mov esi, OFFSET Segments_Y
+mov al, [esi+ebx-1]
+mov dh, al
+call Gotoxy
+mov edx, NumOfSegments
+inc edx
+cmp ecx, edx
+jne PrintSeg
+mov al, head
+jmp Printtail
+
+PrintSeg:
+mov al, part
+
+Printtail:
+call WriteChar
+
+Loop Print
+
+ret
+PrintSegments ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ScoreDisp PROC
+; This procedure will display the user's score
+
+mov eax, score
+add eax, 1
+mov score, eax
+
+ret
+ScoreDisp ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 GameSpeed PROC USES eax ebx edx
@@ -377,6 +474,8 @@ Finish:
 ret
 GameSpeed ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 
 
 exit
