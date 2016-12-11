@@ -36,6 +36,8 @@ y_tail BYTE ?         ; Holds the y coordinate for the tail of the snake
 Segments_X BYTE 800 DUP(0)  ; Array for the X coordinate of the segments
 Segments_Y BYTE 800 DUP(0)  ; Array for the Y coordinate of the segments
 
+NumOfSegments DWORD 0
+
 score DWORD 0
 speed WORD 90         ; Holds the speed of the game
 
@@ -72,25 +74,58 @@ y WORD ?        ; y Coordinate
 COORD ENDS
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-Snake STRUCT
+Snake PROC USES eax ebx ecx esi
 ; This procedure will genereate a Snake 
+mov ebx, NumOfSegments
+cmp ebx, 1
+jge Continue
+mov esi, OFFSET Segments_X
+mov al, x_head
+mov [esi], al
+mov al, [esi]
+mov esi, OFFSET Segments_Y
+mov al, y_head
+mov [esi], al
+mov al,[esi]
+jmp Finish
 
-mov dl, SnakeX
-mov dh, SnakeY
+Continue:
+mov al, foodeaten
+movzx eax, al
+cmp al, 0
+jne NotEaten
 
-call Gotoxy
+Eaten:
+mov ecx, NumOfSegments
+inc ecx
 
-mov edx, OFFSET SnakeArr
-mov ax, SizeOf SnakeArr                           ; This will set the Ax register to be incremented during the loop 
-mov ecx, 15                                      ; This will set the ECX register to be decremented while looping
-         
-call WriteString
+ShiftRight:
+mov ebx, ecx
+mov esi, OFFSET Segments_X
+mov al, [esi+ebx-1]
+mov [esi+ebx], al
+mov esi, OFFSET Segments_Y
+mov al, [esi+ebx-1]
+mov [esi+ebx], al
 
-inc ax
+Loop ShiftRight
 
+mov esi, OFFSET Segments_X
+mov al, x_food
+mov [esi], al
+mov esi, OFFSET Segments_Y
+mov al, y_food
+mov [esi], al
+
+NotEaten:
+
+call SetGame
+call PrintSegments
+
+Finish:
 
 ret
-Snake ENDS
+Snake ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
