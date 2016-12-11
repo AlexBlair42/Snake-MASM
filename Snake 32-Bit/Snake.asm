@@ -14,6 +14,11 @@ INCLUDE Irvine32.inc
 ; 218 is the character I want for the snake 
 .data
 
+;;;;;;;;;;;;;;;;;;;;;;;
+
+Gameover BYTE " Game Over! ",0
+ScoreDisp BYTE " Your Score Is: ",0
+
 ;;;;;;;;;;;;;;;;;;;;;;; These are the Snake elements
 x_head BYTE ?         ; X coordinate of the head of the snake
 y_head BYTE ?         ; Y coordinate of the head of the snake
@@ -31,6 +36,7 @@ y_tail BYTE ?         ; Holds the y coordinate for the tail of the snake
 Segments_X BYTE 800 DUP(0)  ; Array for the X coordinate of the segments
 Segments_Y BYTE 800 DUP(0)  ; Array for the Y coordinate of the segments
 
+score DWORD 0
 speed WORD 90         ; Holds the speed of the game
 
 direction BYTE 0      ; Holds Direction
@@ -180,9 +186,68 @@ cmp al, 4DH
 je Right
 dec dl
 jmp UpdateHead
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; This is where I left off
+
+UpRight:
+mov oldDirect, 49H
+cmp al, 4H
+je DownLeft
+dec dh
+inc dl
+jmp UpdateHead
+
+UpLeft:
+mov oldDirect, 47H
+cmp al, 51H
+je DownRight
+dec dh
+dec dl
+jmp UpdateHead
+
+DownRight:
+mov oldDirect, 51H
+cmp al, 47H
+je UpLeft
+inc dh
+inc dl
+jmp UpdateHead
+
+DownLeft:
+mov oldDirect, 4FH
+cmp al, 49H
+je UpRight
+inc dh
+dec dl
+
+UpdateHead:
+mov x_head, dl
+mov y_head, dh
+call Gotoxy
+mov al, head
+call WriteChar
+
+Finish:
 
 ret
+
+GameOver:
+mov dl, x_head
+mov dh, y_head
+call Gotoxy
+mov al, head
+call WriteChar
+mov eax, 1000
+call Delay
+mov dl, 33
+mov dh, 13
+call Gotoxy
+mov eax, red+(white*16)
+call SetTextColor
+mov edx, OFFSET Gameover
+call WriteString
+mov dl, 20
+mov dh, 24
+call Gotoxy
+exit
 SnakeMovement ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -190,39 +255,94 @@ SnakeMovement ENDP
 ScoreDisp PROC
 ; This procedure will display the user's score
 
+mov eax, score
+add eax, 1
+mov score, eax
+
 ret
 ScoreDisp ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-FoodRand PROC
+Food PROC USES eax edx
 ; This procedure will randomize and display the food for the snake
 
-call Random32
+NewFood:
+mov al, foodeaten
+cmp al, 0
+jne NotEaten
 
-mov dh, ah
-
-call Random32
-
+RandomX:
+mov foodeaten, 1
+mov eax, 64
+call RandomRange
+cmp al, 15
+jl RandomX
+mov x_food, al
 mov dl, al
 
+RandomY:
+mov eax, 18
+call RandomRange
+cmp al, 5
+jl RandomY
+mov y_food, al
+mov dh, al
 call Gotoxy
+mov al, food
+call WriteChar
+mov al, dl
 
-mov edx, OFFSET FoodArr
+NotEaten:
+mov al, x_head
+mov ah, y_head
+mov dl, x_food
+mov dh, y_food
+cmp ax, dx
+jne Finish
+mov eax, NumOfSegments
+inc eax
+mov NumOfSegments, eax
+mov foodeaten, 0
+call AddSegment
+call ScoreDisp
+mov dl, 30
+mov dh, 23
+call Gotoxy
+mov edx, OFFSET String2
 call WriteString
+mov eax, score
+call WriteInt
+jmp Finish
+Finish:
 
 ret
-FoodRand ENDP
+Food ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-UserInput PROC
+GameSpeed PROC USES eax ebx edx
 
+mov edx, 0
+mov eax, score
+mov ebx, 10
+div ebx
+cmp edx, 1
+jne Finish
+mov ax, speed
+mov bx, 10
+sub ax, bx
+mov speed, ax
+mov eax, score
+add eax, 1
+mov score, eax
+
+Finish:
 
 ret
-UserInput ENDP
+GameSpeed ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
+exit
 END main
