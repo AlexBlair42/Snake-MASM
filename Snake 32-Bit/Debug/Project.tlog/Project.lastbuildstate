@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=8.1
 Debug|Win32|E:\Documents\Github local repo\Snake MASM\Snake 32-Bit\|
+=======
+#TargetFrameworkVersion=v4.0:PlatformToolSet=v140:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit
+Debug|Win32|C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\|
+>>>>>>> 4708cff0045948f415299d5abea678fbb2d2b392
