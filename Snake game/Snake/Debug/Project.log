@@ -1,6 +1,0 @@
-﻿  Assembling Main.asm...
-Main.asm(24): error A2206: missing operator in expression
-Main.asm(24): error A2114: INVOKE argument type mismatch : argument : 2
-Main.asm(21): warning A6004: procedure argument or local not referenced : var1
-Main.asm(21): warning A6004: procedure argument or local not referenced : var2
-C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\BuildCustomizations\masm.targets(50,5): error MSB3721: The command "ml.exe /c /nologo /Sg /WX /Zi /Fo"Debug\Main.obj" /Fl"Project.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /TaMain.asm" exited with code 1.
