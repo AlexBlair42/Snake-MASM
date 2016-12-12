@@ -1,8 +1,8 @@
-﻿Build started 12/11/2016 7:35:03 PM.
+﻿Build started 12/11/2016 8:03:26 PM.
      1>Project "C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Project.vcxproj" on node 2 (Build target(s)).
      1>_MASM:
          Assembling Snake.asm...
-         cmd.exe /C "C:\Users\Alex\AppData\Local\Temp\tmpc028fe07eb9342079837371be0a104f2.cmd"
+         cmd.exe /C "C:\Users\Alex\AppData\Local\Temp\tmp7053922ffd394652a6dfa35b14285e50.cmd"
          ml.exe /c /nologo /Sg /WX /Zi /Fo"Debug\Snake.obj" /Fl"Project.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /TaSnake.asm
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Debug\Project.exe" /NOLOGO /LIBPATH:c:\Irvine user32.lib irvine32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Debug\Project.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"C:\Users\Alex\Documents\GitHub\Snake-MASM\Snake 32-Bit\Debug\Project.lib" /MACHINE:X86 /SAFESEH:NO Debug\Snake.obj
@@ -11,4 +11,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.52
+Time Elapsed 00:00:00.62
