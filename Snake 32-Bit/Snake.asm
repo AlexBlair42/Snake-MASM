@@ -63,7 +63,6 @@ Sides2 BYTE " & " , 0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 main PROC
 call Clrscr
-
 mov dl, 14
 mov dh, 2
 call Gotoxy
@@ -124,7 +123,7 @@ mov al, head
 call WriteChar
 
 Start:
-;call CrashSnake
+call Collide
 call ReadKey
 jz SameDirect
 cmp ah, 51H
@@ -556,12 +555,16 @@ ret
 GameSpeed ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-CrashSnake PROC USES eax ebx ecx edx esi
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Collide PROC USES eax ebx ecx edx esi
 	mov ecx, NumOfSegments		
 	cmp ecx, 3
-	jle Finish			
+	jle EndOfGame		
 	inc ecx
-Colision:					
+Collision:					
 	mov ebx, ecx	
 	mov esi, OFFSET Segments_X		
 	mov al, [esi+ebx-2]
@@ -588,7 +591,7 @@ EndOfGame:
 	mov dl, 33
 	mov dh, 13			
 	call Gotoxy
-	mov edx, OFFSET String3
+	mov edx, OFFSET GameOverST
 	call WriteString
 	mov dl, 20			
 	mov dh, 24
@@ -599,6 +602,9 @@ EndOfGame:
 Endd:
 	Loop Collision
 
+   ret
+   Collide ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 exit
 END main
