@@ -556,7 +556,48 @@ ret
 GameSpeed ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+CrashSnake PROC USES eax ebx ecx edx esi
+	mov ecx, NumOfSegments		
+	cmp ecx, 3
+	jle Finish			
+	inc ecx
+Colision:					
+	mov ebx, ecx	
+	mov esi, OFFSET Segments_X		
+	mov al, [esi+ebx-2]
+	mov dl, al
+	mov esi, OFFSET Segments_Y		
+	mov al, [esi+ebx-2]
+	mov dh, al			
+	mov al, x_head
+	mov ah, y_head			
+	cmp dx, ax
+	je Lengthh			
+	jmp Endd
+Lengthh:				
+	mov edx, NumOfSegments
+	inc edx				
+	cmp ecx, edx
+	je Endd
+EndOfGame:
+	mov dl, x_head			
+	mov dh, y_head
+	call Gotoxy			
+	mov al, head
+	call WriteChar
+	mov dl, 33
+	mov dh, 13			
+	call Gotoxy
+	mov edx, OFFSET String3
+	call WriteString
+	mov dl, 20			
+	mov dh, 24
+	call Gotoxy			
+	mov eax, 1500
+	call Delay
+	exit
+Endd:
+	Loop Collision
 
 
 exit
