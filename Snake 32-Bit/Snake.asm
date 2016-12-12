@@ -52,6 +52,9 @@ speed WORD 90         ; Holds the speed of the game
 direction BYTE 0      ; Holds Direction
 oldDirect BYTE 0      ; Holds the old direction
 
+Sides1 BYTE ' &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ' , 0
+Sides2 BYTE ' & ' , 0
+
 
 
 .code
@@ -59,12 +62,76 @@ oldDirect BYTE 0      ; Holds the old direction
 main PROC
 call Clrscr
 
-;call Snake
+mov dl, 14
+mov dh, 4
+call Gotoxy
+mov eax, brown+(white*16)
+call SetTextColor
+mov edx, OFFSET Sides1
 
-;call Food
 
+Sides:
+mov dl, 14
+mov dh, ah
+call Gotoxy
+dec ah
+mov edx, OFFSET Sides2
+call WriteString
+cmp ah, 4
+jg Sides
+mov dl, 14
+mov dh, 21
+call Gotoxy
+mov edx, OFFSET Sides1
+call WriteString
 
-	exit
+RandomX:
+Call Randomize
+mov eax, 64
+call RandomRange
+cmp al, 15
+jl RandomX
+mov x_head, al
+mov  esi, OFFSET Segments_X
+mov [esi], al
+mov dl, al
+
+RandomY:
+mov eax, 19
+call RandomRange
+cmp al, 5
+jl RandomY
+mov y_head, al
+mov esi, OFFSET Segments_Y
+mov [esi], al
+mov dh, al
+call Gotoxy
+mov al, head
+call WriteChar
+
+Start:
+;call CrashSnake
+call ReadKey
+jz SameDirect
+cmp ah, 51H
+jg Start
+cmp ah, 47H
+jl Start
+cmp ah, 4CH
+je Start
+call SnakeMovement
+call SetGame
+call PrintSegments
+jmp Start
+
+SameDirect:
+mov ah, direction
+cmp ax, 0001H
+je Start
+call SnakeMovement
+call SetGame
+call PrintSegments
+jmp Start
 main ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
