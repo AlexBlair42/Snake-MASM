@@ -24,7 +24,9 @@ INCLUDE Irvine32.inc
 ;;;;;;;;;;;;;;;;;;;;;;;
 ; These are strings to be printed to the console
 
-WelcMsg BYTE " Welcome to Snake! ", 0
+; Strings
+
+WelcMsg BYTE " Welcome to Snake! Press an Arrow Key to start. :) ", 0
 GameoverST BYTE " Game Over! ",0
 ScoreDispST BYTE " Your Score Is: ",0
 SpeedDisp BYTE " Game Speed is: ",0
@@ -33,12 +35,12 @@ SpeedDisp BYTE " Game Speed is: ",0
 x_head BYTE ?         ; X coordinate of the head of the snake
 y_head BYTE ?         ; Y coordinate of the head of the snake
 head BYTE 2H          ; Character for the head of the snake
-part BYTE "#"      ; Character for snake segments
+part BYTE "0"       ; Character for snake segments
 
 x_food BYTE ?         ; X coordinate for the food
 y_food BYTE ?         ; Y coordinate for the food
 foodeaten BYTE 0      ; Amount of food eaten
-Food BYTE "a"         ; Character for the food
+Food BYTE "*"         ; Character for the food
 
 x_tail BYTE ?         ; Holds the x coordinate for the tail of the snake
 y_tail BYTE ?         ; Holds the y coordinate for the tail of the snake
@@ -54,8 +56,8 @@ speed WORD 90         ; Holds the speed of the game
 direction BYTE 0      ; Holds Direction
 oldDirect BYTE 0      ; Holds the old direction
 
-Sides1 BYTE " &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& " , 0
-Sides2 BYTE " & " , 0
+Sides1 BYTE " ------------------------------------------------------------------------ " , 0
+Sides2 BYTE " |                                                                      | " , 0
 
 
 
@@ -65,17 +67,22 @@ main PROC
 call Clrscr
 
 mov dl, 14
-mov dh, 2
+mov dh, 1
 call Gotoxy
 mov edx, OFFSET WelcMsg
 call WriteString
+call Crlf
+call Crlf
 
 
-mov dl, 0
-mov dh, 8
+
+mov dl, 14
+mov dh, 2
 call Gotoxy
 mov edx, OFFSET SpeedDisp
 call WriteString
+call Crlf
+
 
 mov dl, 14
 mov dh, 4
@@ -124,7 +131,7 @@ mov al, head
 call WriteChar
 
 Start:
-;call CrashSnake
+call Collide
 call ReadKey
 jz SameDirect
 cmp ah, 51H
@@ -162,8 +169,8 @@ call GameSpeed
 mov ax, speed
 movzx eax, ax           ; This delays motion
 call Delay
-mov dl, 0
-mov dh, 9
+mov dl, 30
+mov dh, 2
 call Gotoxy
 mov ax, speed
 movzx eax, ax
@@ -296,11 +303,9 @@ mov al, head
 call WriteChar
 mov eax, 1000
 call Delay
-mov dl, 33
+mov dl, 45
 mov dh, 13
 call Gotoxy
-mov eax, red+(white*16)
-call SetTextColor
 mov edx, OFFSET GameoverST
 call WriteString
 mov dl, 20
@@ -556,12 +561,16 @@ ret
 GameSpeed ENDP
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-CrashSnake PROC USES eax ebx ecx edx esi
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Collide PROC USES eax ebx ecx edx esi
 	mov ecx, NumOfSegments		
 	cmp ecx, 3
-	jle Finish			
+	jle Finish		
 	inc ecx
-Colision:					
+Collision:					
 	mov ebx, ecx	
 	mov esi, OFFSET Segments_X		
 	mov al, [esi+ebx-2]
@@ -588,7 +597,7 @@ EndOfGame:
 	mov dl, 33
 	mov dh, 13			
 	call Gotoxy
-	mov edx, OFFSET String3
+	mov edx, OFFSET GameOverST
 	call WriteString
 	mov dl, 20			
 	mov dh, 24
@@ -598,6 +607,11 @@ EndOfGame:
 	exit
 Endd:
 	Loop Collision
+Finish:
+
+ret
+Collide ENDP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 exit
