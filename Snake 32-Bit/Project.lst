@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.23506.0	    12/11/16 14:55:57
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    12/11/16 18:45:44
 Snake   (Snake.asm					     Page 1 - 1
 
 
@@ -23,6 +23,11 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    12/11/16 14:55:57
 			      C 
 
 				; Last update: 12/8/16
+
+				; Alex Blair
+				; Mckenna Galle
+				; Julia Abbott
+				; Eben Schumann
 
 				;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 				; This program: 
@@ -558,7 +563,7 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    12/11/16 14:55:57
  000003E3  6A 00	   *	    push   +000000000h
  000003E5  E8 00000000 E   *	    call   ExitProcess
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23506.0	    12/11/16 14:55:57
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    12/11/16 18:45:44
 Snake   (Snake.asm					     Symbols 2 - 1
 
 
