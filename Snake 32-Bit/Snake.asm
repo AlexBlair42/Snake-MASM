@@ -16,7 +16,7 @@ INCLUDE Irvine32.inc
 ;Also the next level will start if the snake finishes all of its food. 
 ;Lastly the user may end the game by pressing the escape key.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; 218 is the character I want for the snake 
+
 
 
 .data
