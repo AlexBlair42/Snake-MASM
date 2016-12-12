@@ -24,8 +24,10 @@ INCLUDE Irvine32.inc
 ;;;;;;;;;;;;;;;;;;;;;;;
 ; These are strings to be printed to the console
 
+WelcMsg BYTE " Welcome to Snake! ", 0
 GameoverST BYTE " Game Over! ",0
 ScoreDispST BYTE " Your Score Is: ",0
+SpeedDisp BYTE " Game Speed is: ",0
 
 ;;;;;;;;;;;;;;;;;;;;;;; These are the Snake elements
 x_head BYTE ?         ; X coordinate of the head of the snake
@@ -52,8 +54,8 @@ speed WORD 90         ; Holds the speed of the game
 direction BYTE 0      ; Holds Direction
 oldDirect BYTE 0      ; Holds the old direction
 
-Sides1 BYTE ' &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ' , 0
-Sides2 BYTE ' & ' , 0
+Sides1 BYTE " &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& " , 0
+Sides2 BYTE " & " , 0
 
 
 
@@ -63,12 +65,24 @@ main PROC
 call Clrscr
 
 mov dl, 14
+mov dh, 2
+call Gotoxy
+mov edx, OFFSET WelcMsg
+call WriteString
+
+
+mov dl, 0
+mov dh, 8
+call Gotoxy
+mov edx, OFFSET SpeedDisp
+call WriteString
+
+mov dl, 14
 mov dh, 4
 call Gotoxy
-mov eax, brown+(white*16)
-call SetTextColor
 mov edx, OFFSET Sides1
-
+call WriteString
+mov ah, 20
 
 Sides:
 mov dl, 14
