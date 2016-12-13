@@ -48,7 +48,7 @@ y_tail BYTE ?         ; Holds the y coordinate for the tail of the snake
 Segments_X BYTE 800 DUP(0)  ; Array for the X coordinate of the segments
 Segments_Y BYTE 800 DUP(0)  ; Array for the Y coordinate of the segments
 
-NumOfSegments DWORD 0
+NumOfSegments DWORD 0    ; This is for the number of segments of the snake
 
 score DWORD 0
 speed WORD 90         ; Holds the speed of the game
@@ -64,12 +64,12 @@ Sides2 BYTE " |                                                                 
 .code
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 main PROC
-call Clrscr
+call Clrscr             ; Clears the screen first
 
 mov dl, 14
 mov dh, 1
 call Gotoxy
-mov edx, OFFSET WelcMsg
+mov edx, OFFSET WelcMsg                   ; Displays the welcome message
 call WriteString
 call Crlf
 call Crlf
@@ -79,7 +79,7 @@ call Crlf
 mov dl, 14
 mov dh, 2
 call Gotoxy
-mov edx, OFFSET SpeedDisp
+mov edx, OFFSET SpeedDisp                 ; Displays the current speed that the snake is moving
 call WriteString
 call Crlf
 
@@ -87,7 +87,7 @@ call Crlf
 mov dl, 14
 mov dh, 4
 call Gotoxy
-mov edx, OFFSET Sides1
+mov edx, OFFSET Sides1                    ; Generates the top and bottom of the game bored
 call WriteString
 mov ah, 20
 
@@ -96,7 +96,7 @@ mov dl, 14
 mov dh, ah
 call Gotoxy
 dec ah
-mov edx, OFFSET Sides2
+mov edx, OFFSET Sides2                    ; Generates the sides of the game bored
 call WriteString
 cmp ah, 4
 jg Sides
@@ -113,7 +113,7 @@ call RandomRange
 cmp al, 15
 jl RandomX
 mov x_head, al
-mov  esi, OFFSET Segments_X
+mov  esi, OFFSET Segments_X               ; Generates a random value for the x coordinates of the head of the snake
 mov [esi], al
 mov dl, al
 
@@ -123,16 +123,16 @@ call RandomRange
 cmp al, 5
 jl RandomY
 mov y_head, al
-mov esi, OFFSET Segments_Y
+mov esi, OFFSET Segments_Y                ; Generates a random y coordinate for the head of the snake
 mov [esi], al
 mov dh, al
 call Gotoxy
 mov al, head
 call WriteChar
 
-Start:
-call Collide
-call ReadKey
+Start:                                     ; Conditions for starting the game
+call Collide                               ; Checks for collisions
+call ReadKey                               ; Takes user input with the arrow keys
 jz SameDirect
 cmp ah, 51H
 jg Start
@@ -186,8 +186,8 @@ call FoodEat
 mov ah, direction     ; This passes the new direction to ah
 mov al, oldDirect     ; This passes the old direction to al
 
-cmp dl, 64
-jge GameOver
+cmp dl, 64                          ; Checks for invalid movements
+jge GameOver                        ; Checks foor Game Over conditions being met
 
 cmp dl, 14
 jle GameOver
@@ -195,65 +195,65 @@ jle GameOver
 cmp dh, 21
 jge GameOver
 
-cmp dh, 4
+cmp dh, 4                            ; Checks for Game Over conditions being met
 jle GameOver
 
-cmp ah, 48H
+cmp ah, 48H                          ; Checks for necessayr UP direction
 je Up
 
-cmp ah, 50H
+cmp ah, 50H                          ; Checks down
 je Down
 
-cmp ah, 4DH
+cmp ah, 4DH                          ; Checks Right
 je Right
 
 cmp ah, 4BH
-je Left
+je Left                              ; Checks Left
 
 cmp ah, 49H
-je UpRight
+je UpRight                           ; Checks UpRight
 
 cmp ah, 47H
-je UpLeft
+je UpLeft                            ; Checks UpLeft
 
 cmp ah, 51H
-je DownRight
+je DownRight                         ; Checks DownRight
 
 cmp ah, 4FH
-je DownLeft
+je DownLeft                          ; Checks DownLeft
 
-jmp Finish
+jmp Finish                           ; End of checks
 
 
-Up:
+Up:                                 ; Up movement
 mov oldDirect, 48H
 cmp al, 50H
 je Down
 dec dh
 jmp UpdateHead
 
-Down:
+Down:                                ; Down movement
 mov oldDirect, 50H
 cmp al, 48H
 je Up
 inc dh
 jmp UpdateHead
 
-Right:
+Right:                               ; Right movement
 mov oldDirect, 4DH
 cmp al, 4BH
 je Left
 inc dl
 jmp UpdateHead
 
-Left:
+Left:                               ; Left movement
 mov oldDirect, 4BH
 cmp al, 4DH
 je Right
 dec dl
 jmp UpdateHead
 
-UpRight:
+UpRight:                             ; Up and right movement
 mov oldDirect, 49H
 cmp al, 4H
 je DownLeft
@@ -261,7 +261,7 @@ dec dh
 inc dl
 jmp UpdateHead
 
-UpLeft:
+UpLeft:                               ; Up and left movement
 mov oldDirect, 47H
 cmp al, 51H
 je DownRight
@@ -269,7 +269,7 @@ dec dh
 dec dl
 jmp UpdateHead
 
-DownRight:
+DownRight:                            ; Down and right movement
 mov oldDirect, 51H
 cmp al, 47H
 je UpLeft
@@ -277,14 +277,14 @@ inc dh
 inc dl
 jmp UpdateHead
 
-DownLeft:
+DownLeft:                             ; Down and left movement
 mov oldDirect, 4FH
 cmp al, 49H
 je UpRight
 inc dh
 dec dl
 
-UpdateHead:
+UpdateHead:                           ; Updates the head of the snake as it relates to its position
 mov x_head, dl
 mov y_head, dh
 call Gotoxy
@@ -295,7 +295,7 @@ Finish:
 
 ret
 
-GameOver:
+GameOver:                             ; Conditions for Game Over
 mov dl, x_head
 mov dh, y_head
 call Gotoxy
@@ -323,12 +323,12 @@ SnakeMovement ENDP
 FoodEat PROC USES eax edx
 ; This procedure will randomize and display the food for the snake
 
-NewFood:
+NewFood:                       ; Checks if there is already food.
 mov al, foodeaten
 cmp al, 0
 jne NotEaten
 
-RandomX:
+RandomX:                        ; Random X for food
 mov foodeaten, 1
 mov eax, 64
 call RandomRange
@@ -337,7 +337,7 @@ jl RandomX
 mov x_food, al
 mov dl, al
 
-RandomY:
+RandomY:                         ; Random Y for Food
 mov eax, 18
 call RandomRange
 cmp al, 5
@@ -349,7 +349,7 @@ mov al, food
 call WriteChar
 mov al, dl
 
-NotEaten:
+NotEaten:                        ; Checks if the food that has been eaten
 mov al, x_head
 mov ah, y_head
 mov dl, x_food
@@ -401,11 +401,11 @@ movzx eax, al
 cmp al, 0
 jne NotEaten
 
-Eaten:
+Eaten:                                           ; Generates a segment if food is eaten
 mov ecx, NumOfSegments
 inc ecx
 
-ShiftRight:
+ShiftRight:                                      ; Shifts the head right to append segment
 mov ebx, ecx
 mov esi, OFFSET Segments_X
 mov al, [esi+ebx-1]
@@ -439,6 +439,7 @@ Snake ENDP
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 SetGame PROC
+; This procedure sets up the starting conditions of the game
 
 mov esi, OFFSET Segments_X
 mov al, [esi]
@@ -480,10 +481,11 @@ SetGame ENDP
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 PrintSegments PROC USES eax ebx ecx edx esi
+; This project prints segments that need to be appended to the end of the snake
 
-mov dl, x_tail
+mov dl, x_tail                 
 mov dh, y_tail
-
+                                         ; Finds the location of the tail of the snake
 call Gotoxy
 
 mov al, ' '
@@ -492,7 +494,7 @@ call WriteChar
 mov ecx, NumOfSegments
 inc ecx
 
-Print:
+Print:                                    ; Print a new segment if the food has been eaten
 mov ebx, ecx
 mov esi, OFFSET Segments_X
 mov al, [esi+ebx-1]
@@ -514,7 +516,7 @@ mov al, part
 Printtail:
 call WriteChar
 
-Loop Print
+Loop Print                                  ; Loops for continuous printing of segments.
 
 ret
 PrintSegments ENDP
@@ -528,7 +530,7 @@ ScoreDisp PROC
 ; This procedure will display the user's score
 
 mov eax, score
-add eax, 1
+add eax, 1                                      ; Displays the score that the user has. The score is the pieces of food eaten
 mov score, eax
 
 ret
@@ -540,6 +542,7 @@ ScoreDisp ENDP
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 GameSpeed PROC USES eax ebx edx
+; This is the quantified game speed. 
 
 mov edx, 0
 mov eax, score
@@ -547,7 +550,7 @@ mov ebx, 10
 div ebx
 cmp edx, 1
 jne Finish
-mov ax, speed
+mov ax, speed                              ; Sets a speed for the game and the snake
 mov bx, 10
 sub ax, bx
 mov speed, ax
@@ -566,11 +569,13 @@ GameSpeed ENDP
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 Collide PROC USES eax ebx ecx edx esi
+; Tests for collisions
+
 	mov ecx, NumOfSegments		
 	cmp ecx, 3
 	jle Finish		
 	inc ecx
-Collision:					
+Collision:                                                 ; This tests for a collision with a wall or the snake itself					
 	mov ebx, ecx	
 	mov esi, OFFSET Segments_X		
 	mov al, [esi+ebx-2]
@@ -583,12 +588,12 @@ Collision:
 	cmp dx, ax
 	je Lengthh			
 	jmp Endd
-Lengthh:				
+Lengthh:				                                  ; Checks the length of the snake 
 	mov edx, NumOfSegments
 	inc edx				
 	cmp ecx, edx
 	je Endd
-EndOfGame:
+EndOfGame:                                                 ; Sets conditions for ending the game
 	mov dl, x_head			
 	mov dh, y_head
 	call Gotoxy			
@@ -597,7 +602,7 @@ EndOfGame:
 	mov dl, 33
 	mov dh, 13			
 	call Gotoxy
-	mov edx, OFFSET GameOverST
+	mov edx, OFFSET GameOverST                             ; Displays Game Over Message
 	call WriteString
 	mov dl, 20			
 	mov dh, 24
